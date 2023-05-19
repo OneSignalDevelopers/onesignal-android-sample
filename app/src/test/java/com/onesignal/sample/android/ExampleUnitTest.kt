@@ -1,4 +1,4 @@
-package dev.lizarraga.onesignal
+package com.onesignal.sample.android
 
 import org.junit.Test
 
