@@ -82,7 +82,7 @@ curl -X "POST" "http://notifications" \
 
 ### Trigger In-App Message
 
-###### 1. Create a new In-App Message
+#### 1. Create a new In-App Message
 
 Navigate to _Messages_ and select **In-App** from the submenu...
 
@@ -94,7 +94,7 @@ Choose **New Message** button...
 
 Choose **New In-App** from the dropdown.
 
-###### 2. Configure In-App Message
+#### 2. Configure In-App Message
 
 Name the In-App Message "Sample IAM"...
 
@@ -102,7 +102,7 @@ Name the In-App Message "Sample IAM"...
 
 Configure the In-App Message to be presented to **All Users**...
 
-![2aec0445942d753e151f455e0814c30e](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/41b87186-be46-49df-a5a8-f85b0bbbfecf)
+![ef8bcd8f47903fa17f81551cbe7129c0](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/e0076b84-3e22-4fa3-8dae-9109be13a04d)
 
 Use the block editor to create the content of your In-App Message...
 
@@ -114,7 +114,7 @@ Configure the In-App Message to trigger when a certain condition is met i.e., `s
 
 Schedule the In-App Message to be presented immediately, to show until dismissed by the user, and to present itself everytime the trigger contions is met.
 
-###### 3. Launch In-App Message
+#### 3. Launch In-App Message
 
 Choose **Make Message Live** at the bottom of the page...
 
