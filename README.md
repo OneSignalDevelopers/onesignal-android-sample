@@ -12,13 +12,13 @@ This is a OneSignal to Android SDK sample .
 ## Usage
 To test this example, clone this repository as follows:
 >
->     $ git clone git@github.com:OneSignalDevelopers/OneSignal-Android-Push-Sample.git
+>     $ git clone https://github.com/OneSignalDevelopers/OneSignal-Android-Push-Sample
 
 In Android Studio:
 
-* File --> Open
-* You select the route where you made the 'clone' of the project, select and OK.
-* That's all and run example.
+1. File --> Open
+2. Choose the path where you cloned the project, select and OK.
+3. Click the green play icon to run the app.
 
 
 ![OneSignal](https://github.com/OneSignalDevelopers/.github/blob/main/assets/onesignal-banner.png?raw=true)
@@ -35,15 +35,15 @@ In Android Studio:
   <hr />
 </div>
 
-# OneSignal [**XYZ SDK**] Sample
+# OneSignal Android Sample
 
 OneSignal makes engaging customers simple and is the fastest, most reliable service to send push notifications, in-app messages, SMS, and emails.
 
-This project demonstrates sending push notifications using [**OneSignal XYZ SDK**]. You can use this project as a boilerplate or reference to start your project.
+This project demonstrates sending push notifications using **OneSignal Android SDK**. You can use this project as a boilerplate or reference to start your project.
 
 ## 🚦 Getting started
 
-Thi s project assumes that you already have a OneSignal app created with push notifications setup. If you don't yet have a OneSignal app, [create one](https://documentation.onesignal.com/docs/apps-organizations#create-an-app) first, then follow the steps below to integrate the OneSignal SDK into your [Android](https://documentation.onesignal.com/docs/android-sdk-setup) or [iOS](https://documentation.onesignal.com/docs/ios-sdk-setup) app.
+This project assumes that you already have a OneSignal app created with push notifications setup. If you don't yet have a OneSignal app, [create one](https://documentation.onesignal.com/docs/apps-organizations#create-an-app) first, then follow the steps below to integrate the OneSignal SDK into your [Android](https://documentation.onesignal.com/docs/android-sdk-setup) or [iOS](https://documentation.onesignal.com/docs/ios-sdk-setup) app.
 
 ```md
 1. Step 1
