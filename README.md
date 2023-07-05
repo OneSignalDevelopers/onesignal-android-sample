@@ -49,10 +49,6 @@ This project assumes that you already have a OneSignal app created with push not
 
 https://github.com/OneSignalDevelopers/onesignal-android-sample/blob/3e5493fe01b67eb294ff071d695c081479d0c895/app/src/main/java/com/onesignal/sample/android/MainApplication.kt#L8-L14
 
-### Login user
-
-https://github.com/OneSignalDevelopers/onesignal-android-sample/blob/3e5493fe01b67eb294ff071d695c081479d0c895/app/src/main/java/com/onesignal/sample/android/MainActivity.kt#L13C8-L15C10
-
 ### Enable push subscription
 
 https://github.com/OneSignalDevelopers/onesignal-android-sample/blob/3e5493fe01b67eb294ff071d695c081479d0c895/app/src/main/java/com/onesignal/sample/android/MainActivity.kt#L21-L23
