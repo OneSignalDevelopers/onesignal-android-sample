@@ -80,6 +80,51 @@ curl -X "POST" "http://notifications" \
 }'
 ```
 
+### Trigger In-App Message
+
+###### 1. Create a new In-App Message
+
+Navigate to _Messages_ and select **In-App** from the submenu...
+
+![e3e65fc86de0dfb1d34a26a343f82416](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/d9645285-6b86-45dd-8723-8af0ad1e8c19)
+
+Choose **New Message** button...
+
+![901a597c23b287d4bb2f5239548e0e80](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/78583f5e-c931-427a-8667-6ad25759f00a)
+
+Choose **New In-App** from the dropdown.
+
+###### 2. Configure In-App Message
+
+Name the In-App Message "Sample IAM"...
+
+![ca0c5009187761be3f10950ddd31ca0c](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/07e4dd49-6014-48df-82ed-866949459885)
+
+Configure the In-App Message to be presented to **All Users**...
+
+![2aec0445942d753e151f455e0814c30e](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/41b87186-be46-49df-a5a8-f85b0bbbfecf)
+
+Use the block editor to create the content of your In-App Message...
+
+![2aec0445942d753e151f455e0814c30e](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/2d7cd693-5ab0-4d55-900f-362aed9700a3)
+
+Configure the In-App Message to trigger when a certain condition is met i.e., `show_sample_iam is 1`...
+
+![26969694a431ea236309c9ec0dca6f4e](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/ed5ff565-a477-4e51-9961-bbad9179f4f9)
+
+Schedule the In-App Message to be presented immediately, to show until dismissed by the user, and to present itself everytime the trigger contions is met.
+
+###### 3. Launch In-App Message
+
+Choose **Make Message Live** at the bottom of the page...
+
+![3d409d47880a9fd0fb7b63f4f89bacfe](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/272bffb7-eef7-4028-889f-a75df398239a)
+
+Review configuration and confirm when correct...
+
+From the sample app, tap the **Present In-App Message** button.
+
+
 # Support
 
 ## Ask a question about OneSignal
