@@ -112,18 +112,15 @@ Configure the In-App Message to trigger when a certain condition is met i.e., `s
 
 ![26969694a431ea236309c9ec0dca6f4e](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/ed5ff565-a477-4e51-9961-bbad9179f4f9)
 
-Schedule the In-App Message to be presented immediately, to show until dismissed by the user, and to present itself everytime the trigger contions is met.
-
-#### 3. Launch In-App Message
-
-Choose **Make Message Live** at the bottom of the page...
+Schedule the In-App Message to be presented immediately, to show until dismissed by the user, and to present itself everytime the trigger contions is met. Then choose **Make Message Live**...
 
 ![3d409d47880a9fd0fb7b63f4f89bacfe](https://github.com/OneSignalDevelopers/onesignal-android-sample/assets/1715082/272bffb7-eef7-4028-889f-a75df398239a)
 
-Review configuration and confirm when correct...
+Review configuration and confirm when correct.
 
-From the sample app, tap the **Present In-App Message** button.
+#### 3. Launch In-App Message
 
+Tap the **Present In-App Message** button in the sample app to present In-App Message.
 
 # Support
 
@@ -131,17 +128,13 @@ From the sample app, tap the **Present In-App Message** button.
 
 You can ask questions about the OneSignal xxx SDK and related topics in the **onesignal-xxx-sdk** repository.
 
-🙋‍♂️ [Ask a question](#)
-
-[☝️ Update link to SDK repo issue template]
+🙋‍♂️ [Ask a question](https://github.com/OneSignal/OneSignal-Android-SDK/issues/new?assignees=&labels=question&projects=&template=ask-question.yml&title=%5Bquestion%5D%3A+)
 
 ## Create a bug report
 
 If you receive an error message or get blocked by an issue, please create a bug report!
 
-🪳 [Create bug report](#)
-
-[☝️ Update link to SDK repo issue template]
+🪳 [Create bug report](https://github.com/OneSignal/OneSignal-Android-SDK/issues/new?assignees=&labels=bug%2Ctriage&projects=&template=bug-report.yml&title=%5BBug%5D%3A+)
 
 # ❤️ Developer Community
 
