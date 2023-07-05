@@ -45,7 +45,9 @@ This project demonstrates sending push notifications using **OneSignal Android S
 
 This project assumes that you already have a OneSignal app created with push notifications setup. If you don't yet have a OneSignal app, [create one](https://documentation.onesignal.com/docs/apps-organizations#create-an-app) first, then follow the steps below to integrate the OneSignal SDK into your [Android](https://documentation.onesignal.com/docs/android-sdk-setup) or [iOS](https://documentation.onesignal.com/docs/ios-sdk-setup) app.
 
-```md
+### Initialize OneSignal 
+
+```kotlin
 1. Step 1
 2. Step 2
 3. Step 3
