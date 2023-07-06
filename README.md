@@ -1,6 +1,6 @@
 # OneSignal Android Sample
 
-Sample app demonstrating integrating the OneSignal SDL into an Android project built with Kotlin.
+Sample app demonstrating integrating the OneSignal SDK into an Android project built with Kotlin.
 
 ## Requirements
 
@@ -16,9 +16,8 @@ To test this example, clone this repository as follows:
 
 In Android Studio:
 
-1. File --> Open
-2. Choose the path where you cloned the project, select and OK.
-3. Click the green play icon to run the app.
+1. Open the project.
+1. Click the green play icon to run the app.
 
 
 ![OneSignal](https://github.com/OneSignalDevelopers/.github/blob/main/assets/onesignal-banner.png?raw=true)
