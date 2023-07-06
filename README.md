@@ -1,6 +1,6 @@
-## How to Add Push Notifications to an Android App with Java and Kotlin
+# OneSignal Android Sample
 
-This is a OneSignal to Android SDK sample .
+Sample app demonstrating integrating the OneSignal SDL into an Android project built with Kotlin.
 
 ## Requirements
 
