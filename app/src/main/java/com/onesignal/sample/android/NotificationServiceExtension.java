@@ -26,7 +26,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
             // whether the notification should be cancelled.
             // Ex uses "OSAction": "stop"
             // We could potentially use `dismissal_date` to determine to cancel
-            if (event.getNotification().getAdditionalData().get("OSAction") == "stop") {
+            if (event.getNotification().getAdditionalData().get("os_action") == "stop") {
                 // We can get the notification ID from the event itself
                 int notificationId = Integer.parseInt(event.getNotification().getNotificationId());
 
