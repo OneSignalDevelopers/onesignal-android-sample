@@ -1,27 +1,57 @@
 package com.onesignal.sample.android;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import androidx.core.app.NotificationCompat;
+
 import com.onesignal.notifications.IActionButton;
 import com.onesignal.notifications.IDisplayableMutableNotification;
 import com.onesignal.notifications.INotificationReceivedEvent;
 import com.onesignal.notifications.INotificationServiceExtension;
 
 public class NotificationServiceExtension implements INotificationServiceExtension {
+    private static final String CHANNEL_ID = "progress_channel";
+
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
 
-        if (notification.getActionButtons() != null) {
-            for (IActionButton button : notification.getActionButtons()) {
-                // you can modify your action buttons here
-            }
+        Context context = event.getContext(); // Assuming there's a way to obtain context
+        createNotificationChannel(context);
+
+        // Simulated download progress
+        int progressMax = 100;
+        int currentProgress = 30; // This would be dynamically updated in a real scenario
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setContentTitle("Download in progress")
+                .setContentText("Downloading...")
+                .setSmallIcon(android.R.drawable.ic_media_play)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setProgress(progressMax, currentProgress, false);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build()); // ID 1 is arbitrary
+
+        // As the download progresses, you would need to update the progress like so:
+        // builder.setProgress(progressMax, newCurrentProgress, false);
+        // notificationManager.notify(1, builder.build());
+    }
+
+    private void createNotificationChannel(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Progress Notification";
+            String description = "Shows the progress of a download";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
-
-        // this is an example of how to modify the notification by changing the background color to blue
-        notification.setExtender(builder -> builder.setColor(0xFF0000FF));
-        notification.setExtender(builder -> builder.setAutoCancel(false));
-
-        //If you need to perform an async action or stop the payload from being shown automatically,
-        //use event.preventDefault(). Using event.notification.display() will show this message again.
     }
 }
-
