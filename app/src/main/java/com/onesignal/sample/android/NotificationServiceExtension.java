@@ -12,23 +12,30 @@ import com.onesignal.notifications.IDisplayableMutableNotification;
 import com.onesignal.notifications.INotificationReceivedEvent;
 import com.onesignal.notifications.INotificationServiceExtension;
 
+import org.json.JSONException;
+
 public class NotificationServiceExtension implements INotificationServiceExtension {
     private static final String CHANNEL_ID = "progress_channel";
 
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
-
+        try {
+            String William = notification.getAdditionalData().get("live_notification_key").toString();
+            System.out.println(William);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         Context context = event.getContext(); // Assuming there's a way to obtain context
         createNotificationChannel(context);
 
         // Simulated download progress
         int progressMax = 100;
-        int currentProgress = 30; // This would be dynamically updated in a real scenario
+        int currentProgress = 50; // This would be dynamically updated in a real scenario
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle("Download in progress")
-                .setContentText("Downloading...")
+                .setContentTitle("Android Live Notifications is in progress")
+                .setContentText("Elly is working...")
                 .setSmallIcon(android.R.drawable.ic_media_play)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
                 .setOngoing(true)
