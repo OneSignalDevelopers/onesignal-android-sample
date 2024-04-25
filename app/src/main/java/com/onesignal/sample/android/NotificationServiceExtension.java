@@ -14,40 +14,49 @@ import com.onesignal.notifications.INotificationServiceExtension;
 
 import org.json.JSONException;
 
+import java.util.Objects;
+
 public class NotificationServiceExtension implements INotificationServiceExtension {
     private static final String CHANNEL_ID = "progress_channel";
 
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
+        Context context = event.getContext(); // Assuming there's a way to obtain context
+        createNotificationChannel(context);
+        NotificationCompat.Builder builder;
+
         try {
-            String William = notification.getAdditionalData().get("live_notification_key").toString();
-            System.out.println(William);
+            String liveNotificationKey = Objects.requireNonNull(notification.getAdditionalData()).get("live_notification_key").toString();
+            switch (liveNotificationKey) {
+                case "some_id":
+                    int progressMax = 100;
+                    int currentProgress = 50; // This would be dynamically updated in a real scenario
+
+                    builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                            .setContentTitle("Android Live Notifications is in progress")
+                            .setContentText("Elly is working...")
+                            .setSmallIcon(android.R.drawable.ic_media_play)
+                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
+                            .setOngoing(true)
+                            .setOnlyAlertOnce(true)
+                            .setProgress(progressMax, currentProgress, false);
+
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(1, builder.build()); // ID 1 is arbitrary
+
+                    // As the download progresses, you would need to update the progress like so:
+                    // builder.setProgress(progressMax, newCurrentProgress, false);
+                    // notificationManager.notify(1, builder.build());
+                    break;
+                case "some_other_id":
+                    break;
+                default:
+                    throw new IllegalStateException("Unsupported Live Notification Key provided: " + liveNotificationKey);
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        Context context = event.getContext(); // Assuming there's a way to obtain context
-        createNotificationChannel(context);
-
-        // Simulated download progress
-        int progressMax = 100;
-        int currentProgress = 50; // This would be dynamically updated in a real scenario
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle("Android Live Notifications is in progress")
-                .setContentText("Elly is working...")
-                .setSmallIcon(android.R.drawable.ic_media_play)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
-                .setOngoing(true)
-                .setOnlyAlertOnce(true)
-                .setProgress(progressMax, currentProgress, false);
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build()); // ID 1 is arbitrary
-
-        // As the download progresses, you would need to update the progress like so:
-        // builder.setProgress(progressMax, newCurrentProgress, false);
-        // notificationManager.notify(1, builder.build());
     }
 
     private void createNotificationChannel(Context context) {
