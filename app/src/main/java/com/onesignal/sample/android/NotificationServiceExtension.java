@@ -58,16 +58,32 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
             throw new RuntimeException(e);
         }
     }
+    private void createNotificationChannel(Context context, String liveNotificationTypeId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
 
-    private void createNotificationChannel(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Progress Notification";
-            String description = "Shows the progress of a download";
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        NotificationChannel channel;
+        switch (liveNotificationTypeId) {
+            case PROGRESS_LIVE_NOTIFICATION:
+                NotificationChannel maybeProgressChannel = notificationManager.getNotificationChannel(PROGRESS_CHANNEL_ID);
+                if (maybeProgressChannel == null) {
+                    channel = new NotificationChannel(PROGRESS_CHANNEL_ID, "Progress Live Notification", NotificationManager.IMPORTANCE_LOW);
+                    channel.setDescription("Shows the progress of a download");
+                } else {
+                    channel = maybeProgressChannel;
+                }
+                break;
+            case ANOTHER_LIVE_NOTIFICATION:
+                NotificationChannel maybeAnotherChannel = notificationManager.getNotificationChannel(ANOTHER_CHANNEL_ID);
+                if (maybeAnotherChannel == null) {
+                    channel = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
+                    channel.setDescription("Whatever you like");
+                } else {
+                    channel = maybeAnotherChannel;
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected live notification type id: " + liveNotificationTypeId);
         }
     }
 }
