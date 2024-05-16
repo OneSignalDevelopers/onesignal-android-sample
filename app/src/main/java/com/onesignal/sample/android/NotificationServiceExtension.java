@@ -29,6 +29,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
         Context context = event.getContext();
+
         try {
             String liveNotificationTypeId = Objects.requireNonNull(notification.getAdditionalData()).getJSONObject("live_notification_key").getString("id");
             NotificationCompat.Builder builder;
@@ -58,7 +59,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(1, builder.build()); // ID 1 is arbitrary
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             System.err.println(e.getMessage());
         }
     }
