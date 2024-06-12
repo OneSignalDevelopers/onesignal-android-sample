@@ -1,0 +1,13 @@
+#!/bin/sh
+
+curl -X POST "https://onesignal.com/api/v1/notifications" \
+   -H "Content-Type: application/json; charset=utf-8" \
+   -H "Authorization: Basic " \
+   -d '{
+       "app_id": "5e605fcd-de88-4b0a-a5eb-5c18b84d52f3",
+       "collapse_id": "13",
+       "included_segments": ["jun122024"],
+       "contents": {"en": "Download Started"},
+       "headings": {"en": "Download Progress"},
+       "data": {"live_notification_key": {"id":"progress"}}
+   }'
