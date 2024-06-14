@@ -12,6 +12,7 @@ import com.onesignal.notifications.INotificationReceivedEvent;
 import com.onesignal.notifications.INotificationServiceExtension;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -30,39 +31,52 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
         Context context = event.getContext();
-        System.out.println("💩💩💩💩💩");
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder;
+
         try {
-            String liveNotificationTypeId = Objects.requireNonNull(notification.getAdditionalData()).getString("live_notification_key");
-            NotificationCompat.Builder builder;
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            switch (liveNotificationTypeId) {
+            JSONObject lnPayload = Objects
+                    .requireNonNull(notification.getAdditionalData())
+                    .getJSONObject("live_notification");
+            String lnKey = lnPayload.getString("key");
+            String lnEvent = lnPayload.getString("event");
+            JSONObject lnEventUpdates = lnPayload.getJSONObject("event_updates");
+
+            switch (lnKey) {
                 case PROGRESS_LIVE_NOTIFICATION:
-                    createNotificationChannel(event.getContext(), liveNotificationTypeId);
-                    int currentProgress = Objects.requireNonNull(notification.getAdditionalData()).getJSONObject("live_notification_key").getInt("current_progress");
+                    createNotificationChannel(event.getContext(), lnKey);
+
+                    int currentProgress = lnEventUpdates
+                            .getInt("current_progress");
+
                     builder = new NotificationCompat.Builder(context, PROGRESS_CHANNEL_ID)
-                            .setContentTitle("Android Live Notifications is in progress")
-                            .setContentText("Elly is working...")
+                            .setContentTitle(" Progress Live Notifications")
+                            .setContentText("It's working...")
                             .setSmallIcon(android.R.drawable.ic_media_play)
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
                             .setOngoing(true)
                             .setOnlyAlertOnce(true)
                             .setProgress(100, currentProgress, false);
+                    notificationManager.notify(lnKey.hashCode(), builder.build());
                     break;
                 case ANOTHER_LIVE_NOTIFICATION:
-                    builder = new NotificationCompat.Builder(context, PROGRESS_CHANNEL_ID)
+                    createNotificationChannel(event.getContext(), lnKey);
+
+                    builder = new NotificationCompat.Builder(context, ANOTHER_CHANNEL_ID)
                             .setContentTitle("Some other Live Notification")
                             .setContentText("Content goes here")
                             .setSmallIcon(android.R.drawable.ic_media_play)
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
                             .setOngoing(true)
                             .setOnlyAlertOnce(true);
+                    notificationManager.notify(lnKey.hashCode(), builder.build());
                     break;
                 case DISMISS_LIVE_NOTIFICATION:
                     notificationManager.cancelAll();
                 default:
-                    throw new IllegalStateException("Unsupported Live Notification Key provided: " + liveNotificationTypeId);
+                    throw new IllegalStateException("Unsupported Live Notification Key provided: " + lnKey);
             }
-            notificationManager.notify(1, builder.build()); // ID 1 is arbitrary
+           // ID 1 is arbitrary
         } catch (JSONException | NullPointerException e) {
             System.err.println(e.getMessage());
         }
@@ -71,31 +85,24 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-        NotificationChannel channel;
         switch (liveNotificationTypeId) {
             case PROGRESS_LIVE_NOTIFICATION:
-                NotificationChannel maybeProgressChannel = notificationManager.getNotificationChannel(PROGRESS_CHANNEL_ID);
-                if (maybeProgressChannel == null) {
-                    channel = new NotificationChannel(PROGRESS_CHANNEL_ID, "Progress Live Notification", NotificationManager.IMPORTANCE_LOW);
-                    channel.setDescription("Shows the progress of a download");
-                } else {
-                    channel = maybeProgressChannel;
+                NotificationChannel channel1 = notificationManager.getNotificationChannel(PROGRESS_CHANNEL_ID);
+                if (channel1 == null) {
+                    channel1 = new NotificationChannel(PROGRESS_CHANNEL_ID, "Progress Live Notification", NotificationManager.IMPORTANCE_LOW);
+                    channel1.setDescription("Shows the progress of a download");
+                    notificationManager.createNotificationChannel(channel1);
                 }
                 break;
             case ANOTHER_LIVE_NOTIFICATION:
-                System.out.println("💩💩💩💩💩");
-                NotificationChannel maybeAnotherChannel = notificationManager.getNotificationChannel(ANOTHER_CHANNEL_ID);
-                if (maybeAnotherChannel == null) {
-                    channel = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
-                    channel.setDescription("Whatever you like");
-                } else {
-                    channel = maybeAnotherChannel;
+                NotificationChannel channel2 = notificationManager.getNotificationChannel(ANOTHER_CHANNEL_ID);
+                if (channel2 == null) {
+                    channel2 = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
+                    channel2.setDescription("Whatever you like");
                 }
                 break;
             default:
                 throw new IllegalStateException("Unexpected live notification type id: " + liveNotificationTypeId);
         }
-
-        notificationManager.createNotificationChannel(channel);
     }
 }
