@@ -27,11 +27,14 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
     private static final String PROGRESS_CHANNEL_ID = "progress_channel";
     private static final String ANOTHER_CHANNEL_ID = "another_channel";
 
+
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
         IDisplayableMutableNotification notification = event.getNotification();
         Context context = event.getContext();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        createNotificationChannels(notificationManager);
+
         NotificationCompat.Builder builder;
 
         JSONObject lnPayload = Objects
@@ -42,6 +45,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
         }
 
         try {
+
             String lnEvent = lnPayload.getString("event");
             if (lnEvent.equals("dismiss")) {
                 notificationManager.cancelAll();
@@ -54,8 +58,6 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
 
             switch (lnKey) {
                 case PROGRESS_LIVE_NOTIFICATION:
-                    createNotificationChannel(event.getContext(), lnKey);
-
                     int currentProgress = lnEventUpdates
                             .getInt("current_progress");
 
@@ -70,8 +72,6 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
                     notificationManager.notify(PROGRESS_LIVE_NOTIFICATION, 1, builder.build());
                     break;
                 case ANOTHER_LIVE_NOTIFICATION:
-                    createNotificationChannel(event.getContext(), lnKey);
-
                     builder = new NotificationCompat.Builder(context, ANOTHER_CHANNEL_ID)
                             .setContentTitle("Some other Live Notification")
                             .setContentText("Content goes here")
@@ -90,29 +90,21 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
         }
     }
 
-    private void createNotificationChannel(Context context, String liveNotificationTypeId) {
+    private void createNotificationChannels(NotificationManager notificationManager) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
 
-        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-        switch (liveNotificationTypeId) {
-            case PROGRESS_LIVE_NOTIFICATION:
-                NotificationChannel channel1 = notificationManager.getNotificationChannel(PROGRESS_CHANNEL_ID);
-                if (channel1 == null) {
-                    channel1 = new NotificationChannel(PROGRESS_CHANNEL_ID, "Progress Live Notification", NotificationManager.IMPORTANCE_LOW);
-                    channel1.setDescription("Shows the progress of a download");
-                    notificationManager.createNotificationChannel(channel1);
-                }
-                break;
-            case ANOTHER_LIVE_NOTIFICATION:
-                NotificationChannel channel2 = notificationManager.getNotificationChannel(ANOTHER_CHANNEL_ID);
-                if (channel2 == null) {
-                    channel2 = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
-                    channel2.setDescription("Whatever you like");
-                    notificationManager.createNotificationChannel(channel2);
-                }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected live notification type id: " + liveNotificationTypeId);
+        NotificationChannel channel1 = notificationManager.getNotificationChannel(PROGRESS_CHANNEL_ID);
+        if (channel1 == null) {
+            channel1 = new NotificationChannel(PROGRESS_CHANNEL_ID, "Progress Live Notification", NotificationManager.IMPORTANCE_LOW);
+            channel1.setDescription("Shows the progress of a download");
+            notificationManager.createNotificationChannel(channel1);
+        }
+
+        NotificationChannel channel2 = notificationManager.getNotificationChannel(ANOTHER_CHANNEL_ID);
+        if (channel2 == null) {
+            channel2 = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
+            channel2.setDescription("Whatever you like");
+            notificationManager.createNotificationChannel(channel2);
         }
     }
 }
