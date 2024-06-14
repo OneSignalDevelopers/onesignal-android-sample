@@ -1,19 +1,17 @@
 #!/bin/sh
 
-APP_ID=b1ae09b2-5311-432e-b69c-65cb354f3472
-
 curl -X POST "https://onesignal.com/api/v1/notifications" \
    -H "Content-Type: application/json; charset=utf-8" \
    -H "Authorization: Basic $OS_REST_API_KEY" \
    -d '{
-       "app_id": $APP_ID,
+       "app_id": "<APP_ID>",
        "collapse_id": "13",
        "include_aliases": {
             "external_id": ["will_test"]
         },
         "target_channel": "push",
        "contents": {"en": "Download Started"},
-       "headings": {"en": "Download Progress"},
+       "headings": {"en": "You should see a Progress Bar"},
        "data": {
             "live_notification": {
                 "key": "progress",
