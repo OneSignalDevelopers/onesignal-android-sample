@@ -38,8 +38,13 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
             JSONObject lnPayload = Objects
                     .requireNonNull(notification.getAdditionalData())
                     .getJSONObject("live_notification");
-            String lnKey = lnPayload.getString("key");
             String lnEvent = lnPayload.getString("event");
+            if (lnEvent.equals("dismiss")) {
+                notificationManager.cancelAll();
+                return;
+            }
+
+            String lnKey = lnPayload.optString("key");
             JSONObject lnEventUpdates = lnPayload.getJSONObject("event_updates");
 
             switch (lnKey) {
@@ -57,7 +62,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
                             .setOngoing(true)
                             .setOnlyAlertOnce(true)
                             .setProgress(100, currentProgress, false);
-                    notificationManager.notify(lnKey.hashCode(), builder.build());
+                    notificationManager.notify(PROGRESS_LIVE_NOTIFICATION, 1, builder.build());
                     break;
                 case ANOTHER_LIVE_NOTIFICATION:
                     createNotificationChannel(event.getContext(), lnKey);
@@ -69,10 +74,8 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_info))
                             .setOngoing(true)
                             .setOnlyAlertOnce(true);
-                    notificationManager.notify(lnKey.hashCode(), builder.build());
+                    notificationManager.notify(ANOTHER_LIVE_NOTIFICATION, 2, builder.build());
                     break;
-                case DISMISS_LIVE_NOTIFICATION:
-                    notificationManager.cancelAll();
                 default:
                     throw new IllegalStateException("Unsupported Live Notification Key provided: " + lnKey);
             }
@@ -99,6 +102,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
                 if (channel2 == null) {
                     channel2 = new NotificationChannel(ANOTHER_CHANNEL_ID, "Another Live Notification", NotificationManager.IMPORTANCE_LOW);
                     channel2.setDescription("Whatever you like");
+                    notificationManager.createNotificationChannel(channel2);
                 }
                 break;
             default:
