@@ -34,13 +34,18 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder;
 
+        JSONObject lnPayload = Objects
+                .requireNonNull(notification.getAdditionalData())
+                .optJSONObject("live_notification");
+        if (lnPayload == null) {
+            return;
+        }
+
         try {
-            JSONObject lnPayload = Objects
-                    .requireNonNull(notification.getAdditionalData())
-                    .getJSONObject("live_notification");
             String lnEvent = lnPayload.getString("event");
             if (lnEvent.equals("dismiss")) {
                 notificationManager.cancelAll();
+                event.preventDefault();
                 return;
             }
 
@@ -84,6 +89,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
             System.err.println(e.getMessage());
         }
     }
+
     private void createNotificationChannel(Context context, String liveNotificationTypeId) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
 
