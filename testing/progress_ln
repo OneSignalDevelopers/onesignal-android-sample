@@ -16,8 +16,7 @@ curl -X POST "https://onesignal.com/api/v1/notifications" \
             "live_notification": {
                 "key": "progress",
                 "event": "start",
-                "immutable_attributes": {},
-                "initial_attributes": {},
+                "event_attributes": {},
                 "event_updates": {
                     "current_progress": 60
                 }
