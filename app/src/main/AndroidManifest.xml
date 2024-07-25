@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OneSignalAndroidSample"
         tools:targetApi="31">
+        <meta-data android:name="com.onesignal.NotificationServiceExtension"
+            android:value="com.onesignal.sample.android.NotificationServiceExtension" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,5 +25,7 @@
             </intent-filter>
         </activity>
     </application>
+<!--    <uses-permission android:name="android.permission.INTERNET"-->
+<!--        android:maxSdkVersion="18" />-->
 
 </manifest>
