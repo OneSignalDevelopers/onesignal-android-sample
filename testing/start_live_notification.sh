@@ -14,10 +14,9 @@ curl -X POST "https://onesignal.com/api/v1/notifications" \
        "headings": {"en": "You should see some text"},
        "data": {
             "live_notification": {
-                "key": "another",
+                "key": "progress",
                 "event": "start",
-                "immutable_attributes": {},
-                "initial_attributes": {},
+                "event_attributes": {},
                 "event_updates": {}
             }
         }

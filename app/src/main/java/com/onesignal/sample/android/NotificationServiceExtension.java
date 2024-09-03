@@ -30,13 +30,14 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
 
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
+
         IDisplayableMutableNotification notification = event.getNotification();
         Context context = event.getContext();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannels(notificationManager);
-        JSONObject liveNotificationPayload = Objects
-                .requireNonNull(notification.getAdditionalData())
-                .optJSONObject("live_notification");
+        JSONObject additionalData = notification.getAdditionalData();
+        if (additionalData == null) return;
+        JSONObject liveNotificationPayload = additionalData.optJSONObject("live_notification");
 
         if (liveNotificationPayload == null) {
             return;
