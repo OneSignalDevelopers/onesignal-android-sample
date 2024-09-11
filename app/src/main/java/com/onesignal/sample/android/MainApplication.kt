@@ -3,7 +3,7 @@ import android.app.Application
 import com.onesignal.OneSignal
 import com.onesignal.debug.LogLevel
 
-const val ONESIGNAL_APP_ID = "5e605fcd-de88-4b0a-a5eb-5c18b84d52f3"
+const val ONESIGNAL_APP_ID = "305964ee-f979-4054-83e7-4c2096f2b0b4"
 
 class MainApplication : Application() {
     override fun onCreate() {

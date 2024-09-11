@@ -14,6 +14,8 @@ import com.onesignal.notifications.INotificationServiceExtension;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /** @noinspection unused*/
@@ -25,11 +27,11 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
 
     // Channels
     private static final String PROGRESS_CHANNEL_ID = "progress_channel";
-    private static final String ANOTHER_CHANNEL_ID = "another_channel";
-
 
     @Override
     public void onNotificationReceived(INotificationReceivedEvent event) {
+        HashMap<String, Integer> keyMap = new HashMap<String, Integer>();
+        keyMap.put(PROGRESS_LIVE_NOTIFICATION, 0);
 
         IDisplayableMutableNotification notification = event.getNotification();
         Context context = event.getContext();
@@ -37,21 +39,25 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
         createNotificationChannels(notificationManager);
         JSONObject additionalData = notification.getAdditionalData();
         if (additionalData == null) return;
-        JSONObject liveNotificationPayload = additionalData.optJSONObject("live_notification");
+        JSONObject liveNotificationPayload = additionalData
+                .optJSONObject("live_notification");
 
         if (liveNotificationPayload == null) {
             return;
         }
 
         try {
+            String liveNotificationKey = liveNotificationPayload.optString("key");
+
             String liveNotificationEvent = liveNotificationPayload.getString("event");
             if (liveNotificationEvent.equals("dismiss")) {
-                notificationManager.cancelAll();
                 event.preventDefault();
+                int key = keyMap.get(liveNotificationKey);
+                notificationManager.cancel(key);
                 return;
             }
 
-            String liveNotificationKey = liveNotificationPayload.optString("key");
+
             JSONObject liveNotificationUpdates = liveNotificationPayload.getJSONObject("event_updates");
             NotificationCompat.Builder builder;
 
@@ -68,7 +74,7 @@ public class NotificationServiceExtension implements INotificationServiceExtensi
                             .setOngoing(true)
                             .setOnlyAlertOnce(true)
                             .setProgress(100, currentProgress, false);
-                    notificationManager.notify(PROGRESS_LIVE_NOTIFICATION, 1, builder.build());
+                    notificationManager.notify(keyMap.get(PROGRESS_LIVE_NOTIFICATION), builder.build());
                     break;
                 default:
                     throw new IllegalStateException("Unsupported Live Notification Key provided: " + liveNotificationKey);
