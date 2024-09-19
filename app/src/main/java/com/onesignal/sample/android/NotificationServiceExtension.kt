@@ -43,6 +43,7 @@ class NotificationServiceExtension : INotificationServiceExtension {
             return
         }
 
+        event.preventDefault()
         handleLiveNotification(event, liveNotificationPayload, notificationManager, context)
     }
 
