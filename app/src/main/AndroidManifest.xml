@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OneSignalAndroidSample"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <meta-data android:name="com.onesignal.NotificationServiceExtension"
             android:value="com.onesignal.sample.android.NotificationServiceExtension" />
         <activity
@@ -25,7 +27,7 @@
             </intent-filter>
         </activity>
     </application>
-<!--    <uses-permission android:name="android.permission.INTERNET"-->
-<!--        android:maxSdkVersion="18" />-->
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
