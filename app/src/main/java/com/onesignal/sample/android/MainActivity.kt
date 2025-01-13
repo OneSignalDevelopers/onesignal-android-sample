@@ -1,11 +1,13 @@
 package com.onesignal.sample.android
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.onesignal.OneSignal
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.onesignal.OneSignal
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
@@ -15,8 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.login).setOnClickListener {
-            run()
-
+            authenticate()
         }
 
         findViewById<Button>(R.id.logout).setOnClickListener {
@@ -41,15 +42,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun run() {
+    private fun authenticate() {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://localhost:3000/auth")
+            .url("http://10.0.2.2:3000/auth")
             .post("".toRequestBody())
             .build()
 
-        println("Logging in")
+        println("Auth request built")
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: java.io.IOException) {
                 // Handle failure
@@ -58,13 +59,39 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                // Handle success
-                val result = response.body?.string() ?: ""
-                // Process the response data
+                try {
+                    val responseBody = response.body
+                    if (responseBody == null) {
+                        println("Error: Response body is null")
+                        return
+                    }
 
-                OneSignal.login("will")
-                println("Auth server response")
-                println(result)
+                    val jsonData: String = responseBody.string()
+                    println("Auth server response $jsonData")
+
+                    val jsonObject = JSONObject(jsonData)
+
+                    // Safeguard against missing keys
+                    if (!jsonObject.has("onesignal_verification_token")) {
+                        println("Error: Missing 'onesignal_verification_token' in response")
+                        return
+                    }
+
+                    val token = jsonObject.getString("onesignal_verification_token")
+                    println("JWT $token")
+                    
+                    val userObject = jsonObject.optJSONObject("user")
+                    if (userObject == null || !userObject.has("external_id")) {
+                        println("Error: Missing 'external_id' in 'user' object")
+                        return
+                    }
+                    val eid = userObject.getString("external_id")
+
+                    OneSignal.login(eid, token)
+                } catch (e: Exception) {
+                    println("Error parsing response: ${e.message}")
+                    e.printStackTrace()
+                }
             }
         })
     }

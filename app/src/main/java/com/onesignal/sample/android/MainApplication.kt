@@ -5,7 +5,7 @@ import com.onesignal.OneSignal
 import com.onesignal.UserJwtInvalidatedEvent
 import com.onesignal.debug.LogLevel
 
-const val ONESIGNAL_APP_ID = "305964ee-f979-4054-83e7-4c2096f2b0b4"
+const val ONESIGNAL_APP_ID = "4228cf8a-47dd-44d2-b646-9a8263db2898"
 
 class MainApplication : Application() {
     override fun onCreate() {
@@ -15,7 +15,6 @@ class MainApplication : Application() {
         OneSignal.addUserJwtInvalidatedListener(JWTInvalidatedListener())
     }
 }
-
 class JWTInvalidatedListener: IUserJwtInvalidatedListener {
     override fun onUserJwtInvalidated(event: UserJwtInvalidatedEvent) {
        println("JWT Invalidated $event")
